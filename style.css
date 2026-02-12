@@ -80,6 +80,40 @@ body {
     transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* 慣性のある滑らかな動き */
 }
 
+/* --- リンクの装飾リセット --- */
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.3s;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+/* --- 詳細ページのレイアウト --- */
+.detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px;
+    display: flex;
+    gap: 60px; /* 画像とテキストの間隔 */
+    align-items: flex-start;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* 画像エリア */
+.detail-image {
+    flex: 1; /* 幅を自動調整 */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.detail-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 /* ホバー時のエフェクト */
 .poster-item:hover .image-wrapper {
     box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* 影を濃くして浮き上がり表現 */
@@ -124,6 +158,54 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* テキストエリア */
+.detail-text {
+    flex: 0.8; /* 画像より少し狭くする */
+    padding-top: 20px;
+}
+
+.detail-text h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.meta {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.description {
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+.back-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    background-color: #555;
+    opacity: 1;
+}
+
+/* スマホ対応（縦並びにする） */
+@media (max-width: 768px) {
+    .detail-container {
+        flex-direction: column;
+        padding: 20px;
+        gap: 30px;
     }
 }
 
