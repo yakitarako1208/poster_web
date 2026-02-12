@@ -1,0 +1,134 @@
+/* ベース設定 */
+:root {
+    --bg-color: #f4f4f4;       /* 全体の背景色 */
+    --text-color: #333;        /* 文字色 */
+    --accent-color: #888;      /* アクセントカラー */
+    --card-bg: #ffffff;        /* ポスターカードの背景 */
+    --gap-size: 40px;          /* グリッドの間隔 */
+    --poster-ratio: 1 / 1.414; /* A判の縦横比（重要） */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* ヘッダー */
+.site-header {
+    text-align: center;
+    padding: 80px 20px 40px;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards; /* フェードインアニメーション */
+}
+
+.site-header h1 {
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.site-header p {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* ギャラリーレイアウト */
+.gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 40px 80px;
+    display: grid;
+    /* 画面幅に合わせて列数を自動調整（最小幅300px） */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--gap-size);
+}
+
+/* ポスター個別のカード */
+.poster-item {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* アニメーションの遅延設定（順番に表示させる） */
+.poster-item:nth-child(1) { animation-delay: 0.2s; }
+.poster-item:nth-child(2) { animation-delay: 0.4s; }
+.poster-item:nth-child(3) { animation-delay: 0.6s; }
+.poster-item:nth-child(4) { animation-delay: 0.8s; }
+
+/* 画像枠（A1比率固定・はみ出し非表示） */
+.image-wrapper {
+    width: 100%;
+    aspect-ratio: var(--poster-ratio); /* ここでA1比率を強制 */
+    overflow: hidden;
+    background-color: #ddd; /* 画像読み込み前の色 */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: box-shadow 0.5s ease;
+}
+
+/* 画像本体 */
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 枠いっぱいにトリミングして表示 */
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* 慣性のある滑らかな動き */
+}
+
+/* ホバー時のエフェクト */
+.poster-item:hover .image-wrapper {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* 影を濃くして浮き上がり表現 */
+}
+
+.poster-item:hover .image-wrapper img {
+    transform: scale(1.05); /* 画像を少し拡大 */
+}
+
+/* キャプション */
+.caption {
+    margin-top: 15px;
+    padding-left: 5px;
+}
+
+.caption h2 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.caption p {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    margin: 2px 0 0;
+}
+
+/* フッター */
+.site-footer {
+    text-align: center;
+    padding: 40px;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+
+/* アニメーション定義 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* スマートフォン向けの調整 */
+@media (max-width: 600px) {
+    .site-header { padding-top: 50px; }
+    .gallery-container { padding: 20px; gap: 30px; }
+}
