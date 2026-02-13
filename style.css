@@ -215,65 +215,105 @@ a:hover {
     .gallery-container { padding: 20px; gap: 30px; }
 }
 
-/* --- モーダル拡大表示用のスタイル --- */
 
-/* モーダル全体の背景（暗いオーバーレイ） */
+/* --- style.css モーダル部分（スマホ最適化版） --- */
+
 .modal {
-    visibility: hidden; /* 初期状態は見えない */
-    opacity: 0;         /* 透明 */
+    visibility: hidden;
+    opacity: 0;
     position: fixed;
-    z-index: 1000;      /* 最前面に表示 */
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.85); /* 背景を少し濃い半透明の黒に */
+    background-color: rgba(0,0,0,0.92); /* 背景をさらに濃く */
+    
     display: flex;
-    align-items: center; /* 上下中央揃え */
-    justify-content: center; /* 左右中央揃え */
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* ふわっと表示させる */
+    align-items: center;
+    justify-content: center;
+    
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    
+    /* 【スマホ重要】慣性スクロールを有効にする（iPhoneで滑らかに動く） */
+    overflow: auto; 
+    -webkit-overflow-scrolling: touch; 
+    
+    padding: 0; /* スマホ用に余白をリセット */
 }
 
-/* 表示状態になった時のクラス */
 .modal.show {
     visibility: visible;
     opacity: 1;
 }
 
-/* 拡大される画像本体 */
+/* 画像の設定 */
 .modal-content {
-    max-width: 90%;   /* 画面幅の90%まで */
-    max-height: 90vh; /* 画面高さの90%まで */
-    object-fit: contain; /* 比率を保って収める */
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
-    transform: scale(0.95); /* 少し小さい状態から */
-    transition: transform 0.3s ease; /* ふわっと大きくなる */
+    /* 通常時は画面幅に収める */
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    
+    /* 動きの設定 */
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+    
+    /* 【スマホ重要】タップした時の「青いハイライト」を消す */
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* 画像が表示される時のアニメーション */
-.modal.show .modal-content {
-    transform: scale(1); /* 本来のサイズへ */
+/* 拡大時の設定 */
+.modal-content.is-zoomed {
+    max-width: none;
+    max-height: none;
+    
+    /* 【スマホ調整】スマホの幅に対して2倍くらいの大きさに */
+    /* width: auto; だと大きすぎる場合があるので、スマホでは倍率指定がおすすめ */
+    width: 200%; 
+    
+    cursor: zoom-out;
+    margin: auto; /* 拡大時も中央寄せ */
 }
 
 /* 閉じるボタン（×） */
 .close-modal {
-    position: absolute;
+    position: fixed; /* 常に画面の右上に固定 */
     top: 20px;
-    right: 30px;
-    color: #f1f1f1;
-    font-size: 50px;
+    right: 20px; /* 端に寄せすぎない */
+    
+    /* ボタンのデザインをスマホで見やすく */
+    color: #fff;
+    background: rgba(0,0,0,0.5); /* 背景色をつけて見やすく */
+    width: 44px;  /* 【スマホ重要】指で押しやすい最低サイズ */
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 1001;
-    line-height: 1;
-    transition: color 0.2s;
+    z-index: 1002;
+    
+    /* 【スマホ重要】タップの反応を良くする */
+    touch-action: manipulation;
 }
 
-.close-modal:hover {
-    color: #bbb; /* ホバー時に少し暗く */
-}
-
-/* 詳細ページの画像をクリックできるようにカーソルを変更 */
-.detail-image img {
-    cursor: zoom-in;
+/* PC（大きな画面）用の微調整 */
+@media (min-width: 769px) {
+    .modal {
+        padding: 40px; /* PCなら少し余白がある方が綺麗 */
+    }
+    .modal-content.is-zoomed {
+        width: auto; /* PCなら本来のサイズでOK */
+    }
+    .close-modal {
+        top: 30px;
+        right: 40px;
+        width: 60px; /* PCならもっと大きく */
+        height: 60px;
+        line-height: 60px;
+        font-size: 30px;
+    }
 }

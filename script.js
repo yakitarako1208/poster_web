@@ -1,29 +1,45 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 必要な要素を取得
+    console.log("Script Loaded"); // 読み込み確認用
+
     const modal = document.getElementById("image-modal");
     const modalImg = document.getElementById("expanded-image");
-    const triggerImg = document.querySelector(".detail-image img"); // 詳細ページにある元の画像
+    
+    // 詳細ページのメイン画像を探す
+    // ※ HTML側のクラス名が .detail-image で画像があることを前提としています
+    const triggerImg = document.querySelector(".detail-image img");
+    
     const closeBtn = document.querySelector(".close-modal");
 
-    // もし要素が見つからなければ何もしない（エラー防止）
-    if (!triggerImg || !modal) return;
+    // 要素が見つからない場合のエラーチェック
+    if (!triggerImg) { console.error("詳細画像(.detail-image img)が見つかりません"); return; }
+    if (!modal) { console.error("モーダル(#image-modal)が見つかりません"); return; }
 
-    // ----- 画像をクリックした時の動作 -----
+    // 1. 画像クリックでモーダルを開く
     triggerImg.onclick = function(){
-        modal.classList.add('show'); // モーダルを表示するクラスを追加
-        modalImg.src = this.src;     // クリックした画像のパスを拡大用画像に渡す
-        modalImg.alt = this.alt;     // altテキストもコピー
+        modal.classList.add('show');
+        modalImg.src = this.src;
+        // 拡大リセット
+        modalImg.classList.remove('is-zoomed');
     }
 
-    // ----- 閉じるボタン（×）をクリックした時の動作 -----
+    // 2. モーダル画像クリックで拡大/縮小
+    modalImg.onclick = function(e) {
+        // バブリング防止（背景クリック判定を防ぐ）
+        e.stopPropagation();
+        
+        // クラスを付け外し
+        this.classList.toggle('is-zoomed');
+        console.log("Zoom Toggled:", this.classList.contains('is-zoomed'));
+    }
+
+    // 3. 閉じるボタン
     closeBtn.onclick = function() {
-        modal.classList.remove('show'); // モーダルを表示するクラスを削除
+        modal.classList.remove('show');
     }
 
-    // ----- 背景（黒い部分）をクリックしても閉じるようにする -----
-    modal.onclick = function(event) {
-        // クリックされた場所が画像自体でなければ閉じる
-        if (event.target === modal) {
+    // 4. 背景クリックで閉じる
+    modal.onclick = function(e) {
+        if (e.target === modal) {
             modal.classList.remove('show');
         }
     }
