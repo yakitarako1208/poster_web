@@ -64,3 +64,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+/* --- オープニング画面の制御（初回のみ表示） --- */
+
+document.addEventListener('DOMContentLoaded', function() {
+    const opening = document.getElementById('opening-screen');
+    const key = 'visited'; // 記録に使う合言葉
+
+    if (opening) {
+        // ① ブラウザに「visited」という記録があるかチェック
+        const isVisited = sessionStorage.getItem(key);
+
+        if (isVisited) {
+            // 記録がある場合（2回目以降）
+            // アニメーションさせずに、最初から非表示にする
+            opening.style.display = 'none'; 
+        } else {
+            // 記録がない場合（初回アクセス）
+            // 次回のために「visited」という記録を残す
+            sessionStorage.setItem(key, 'true'); 
+            
+            // ※ここでCSSのアニメーションが自動的に実行されます
+        }
+    }
+});

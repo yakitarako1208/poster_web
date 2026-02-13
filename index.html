@@ -10,11 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="opening-screen" onclick="this.style.display='none'">
+    <div id="opening-screen">
         <div class="logo-box">
             <img src="images/rogo.png" alt="Opening Logo">
         </div>
     </div>
+    
+    <script>
+        if (sessionStorage.getItem('visited')) {
+            document.getElementById('opening-screen').style.display = 'none';
+        } else {
+            sessionStorage.setItem('visited', 'true');
+        }
+    </script>
     <header class="site-header">
 
     <header class="site-header">
