@@ -214,3 +214,66 @@ a:hover {
     .site-header { padding-top: 50px; }
     .gallery-container { padding: 20px; gap: 30px; }
 }
+
+/* --- モーダル拡大表示用のスタイル --- */
+
+/* モーダル全体の背景（暗いオーバーレイ） */
+.modal {
+    visibility: hidden; /* 初期状態は見えない */
+    opacity: 0;         /* 透明 */
+    position: fixed;
+    z-index: 1000;      /* 最前面に表示 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85); /* 背景を少し濃い半透明の黒に */
+    display: flex;
+    align-items: center; /* 上下中央揃え */
+    justify-content: center; /* 左右中央揃え */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* ふわっと表示させる */
+}
+
+/* 表示状態になった時のクラス */
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 拡大される画像本体 */
+.modal-content {
+    max-width: 90%;   /* 画面幅の90%まで */
+    max-height: 90vh; /* 画面高さの90%まで */
+    object-fit: contain; /* 比率を保って収める */
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    transform: scale(0.95); /* 少し小さい状態から */
+    transition: transform 0.3s ease; /* ふわっと大きくなる */
+}
+
+/* 画像が表示される時のアニメーション */
+.modal.show .modal-content {
+    transform: scale(1); /* 本来のサイズへ */
+}
+
+/* 閉じるボタン（×） */
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #f1f1f1;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #bbb; /* ホバー時に少し暗く */
+}
+
+/* 詳細ページの画像をクリックできるようにカーソルを変更 */
+.detail-image img {
+    cursor: zoom-in;
+}
