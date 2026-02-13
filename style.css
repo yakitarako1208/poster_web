@@ -266,15 +266,16 @@ a:hover {
 
 /* 拡大時の設定 */
 .modal-content.is-zoomed {
+    /* 画面サイズのリミッターを外す */
     max-width: none;
     max-height: none;
     
-    /* 【スマホ調整】スマホの幅に対して2倍くらいの大きさに */
-    /* width: auto; だと大きすぎる場合があるので、スマホでは倍率指定がおすすめ */
-    width: 200%; 
+    /* ★ここが修正ポイント */
+    width: auto;     /* 基本は元サイズだが... */
+    min-width: 150%; /* 「最低でも画面の1.5倍の幅」に強制的に引き伸ばす */
     
     cursor: zoom-out;
-    margin: auto; /* 拡大時も中央寄せ */
+    margin: auto;
 }
 
 /* 閉じるボタン（×） */
