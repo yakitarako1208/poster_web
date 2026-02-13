@@ -1,38 +1,58 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Script Loaded"); // 読み込み確認用
-
     const modal = document.getElementById("image-modal");
     const modalImg = document.getElementById("expanded-image");
-    
-    // 詳細ページのメイン画像を探す
-    // ※ HTML側のクラス名が .detail-image で画像があることを前提としています
     const triggerImg = document.querySelector(".detail-image img");
-    
     const closeBtn = document.querySelector(".close-modal");
 
-    // 要素が見つからない場合のエラーチェック
-    if (!triggerImg) { console.error("詳細画像(.detail-image img)が見つかりません"); return; }
-    if (!modal) { console.error("モーダル(#image-modal)が見つかりません"); return; }
+    if (!triggerImg || !modal) return;
 
-    // 1. 画像クリックでモーダルを開く
+    // 1. 詳細ページ画像をクリックしてモーダルを開く
     triggerImg.onclick = function(){
         modal.classList.add('show');
         modalImg.src = this.src;
-        // 拡大リセット
-        modalImg.classList.remove('is-zoomed');
+        modalImg.alt = this.alt;
+        modalImg.classList.remove('is-zoomed'); // 最初は必ず通常サイズで開く
     }
 
-    // 2. モーダル画像クリックで拡大/縮小
+    // 2. モーダル内の画像をクリックして拡大/縮小する（シンプル版）
+    // ----- 2. モーダル内の画像をクリックして拡大/縮小する -----
     modalImg.onclick = function(e) {
-        // バブリング防止（背景クリック判定を防ぐ）
         e.stopPropagation();
-        
-        // クラスを付け外し
-        this.classList.toggle('is-zoomed');
-        console.log("Zoom Toggled:", this.classList.contains('is-zoomed'));
+
+        // これから拡大する場合
+        if (!this.classList.contains('is-zoomed')) {
+            
+            // ▼▼▼ この部分（クリック位置の計算）を復活させました ▼▼▼
+            const rect = this.getBoundingClientRect();
+            // クリックした場所が、画像の「左から何％」「上から何％」の位置か計算
+            const ratioX = (e.clientX - rect.left) / this.offsetWidth;
+            const ratioY = (e.clientY - rect.top) / this.offsetHeight;
+            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+            // 拡大クラスをつける（CSSで大きくなる）
+            this.classList.add('is-zoomed');
+
+            // 拡大反映を少しだけ待ってから、その位置を表示位置に合わせる
+            setTimeout(() => {
+                const newWidth = this.offsetWidth;
+                const newHeight = this.offsetHeight;
+                
+                // 「さっき計算した位置」が画面の中心に来るように座標をセット
+                const scrollX = (newWidth * ratioX) - (modal.clientWidth / 2);
+                const scrollY = (newHeight * ratioY) - (modal.clientHeight / 2);
+
+                // ★ここを「smooth（滑らか）」ではなく、指定なし（一瞬）にしました
+                modal.scrollTo(scrollX, scrollY);
+                
+            }, 100); // 0.1秒後に位置合わせ実行
+
+        } else {
+            // 縮小する場合
+            this.classList.remove('is-zoomed');
+        }
     }
 
-    // 3. 閉じるボタン
+    // 3. 閉じるボタン（×）
     closeBtn.onclick = function() {
         modal.classList.remove('show');
     }
