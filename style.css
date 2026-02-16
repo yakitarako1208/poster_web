@@ -375,3 +375,41 @@ a:hover {
         transform: scale(1);
     }
 }
+
+/* --- 言語切り替えスイッチ --- */
+.lang-switch {
+    position: fixed;
+    top: 30px;      /* 上からの位置（ハンバーガーボタンと合わせる） */
+    right: 80px;    /* 右からの位置（ハンバーガーボタンの左隣） */
+    z-index: 9999;  /* 最前面 */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #ccc;    /* 選択されていないほうの色 */
+}
+
+/* リンクの設定 */
+.lang-switch a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.lang-switch a:hover {
+    color: #333;
+}
+
+/* 選択されている言語（黒くする） */
+.lang-switch .current {
+    color: #333;
+    border-bottom: 1px solid #333; /* 下線をつける */
+}
+
+/* スマホの時は少し位置を調整 */
+@media (max-width: 600px) {
+    .lang-switch {
+        top: 25px;
+        right: 70px;
+        font-size: 0.8rem;
+    }
+}
